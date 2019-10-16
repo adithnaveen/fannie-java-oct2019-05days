@@ -13,9 +13,6 @@ import com.fannie.utils.Util;
 import com.fannie.waits.WaitTypes;
 
 public class RegistrationExplictWaitTest {
-
-
-
 	String URL = "http://elearning.upskills.in";
 	WebDriver driver;
 	WaitTypes waitTypes; 

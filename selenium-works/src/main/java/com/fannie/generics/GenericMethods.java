@@ -52,6 +52,8 @@ public class GenericMethods {
 		}else if(type.equals("linktext")) {
 			return this.driver.findElements(By.linkText(locator)); 
 			
+		}else if(type.equals("xpath")) {
+			return this.driver.findElements(By.xpath(locator)); 
 		}
 		
 		System.out.println("Sorry locator not found ");

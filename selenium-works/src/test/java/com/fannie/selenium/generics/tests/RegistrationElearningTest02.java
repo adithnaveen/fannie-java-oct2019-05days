@@ -38,8 +38,13 @@ public class RegistrationElearningTest02 {
 	public void registrationTest() {
 		driver.get(URL);
 		
-		genericMethods.getElement("login", "id").sendKeys("naveenkumar");
-		genericMethods.getElement("password", "id").sendKeys("testing@123");
+		genericMethods.getElement
+		("login", "id").sendKeys
+		("naveenkumar");
+		
+		genericMethods.getElement
+		("password", "id").sendKeys
+		("testing@123");
 		
 		screenShot.captureScreenShot();
 		
