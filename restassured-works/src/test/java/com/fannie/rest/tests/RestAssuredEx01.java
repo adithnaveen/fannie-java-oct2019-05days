@@ -1,9 +1,18 @@
 package com.fannie.rest.tests;
 
-import static org.hamcrest.Matchers.*; 
+import static org.hamcrest.Matchers.*;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.Cookie;
+import io.restassured.http.Cookies;
+import io.restassured.http.Header;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.*;
 
@@ -13,6 +22,7 @@ public class RestAssuredEx01 {
 	@Before
 	public void setUp() {
 //		proxy("zsproxy.fanniemae.com", 10479);
+		
 	}
 	
 	
@@ -166,7 +176,7 @@ public class RestAssuredEx01 {
 	
 
 	
-	@Test
+	// @Test
 	public void testWithAuthCartIdWithRootDetachAndAttach() {
 		String path="https://ecommerceapiservices.herokuapp.com/v1/account"; 
 		String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjQ5ZjAzNjBlLTk5YTAtNDMxMy05N2I4LTgyZTYyYjMwY2ZjOSIsImlhdCI6MTU3MTQxNTkzNn0.-5349B7LBW6gsWZuyuAI_At9WrsZ89dhx6hRkr2k6Uo"; 
@@ -194,7 +204,101 @@ public class RestAssuredEx01 {
 	}
 	
 	
+
+
+//	@Test
+	public void testPhotosResponse() {
+		String path="https://jsonplaceholder.typicode.com/photos/1"; 
+		
+		
+		Response response = when().get(path).then().extract().response(); 
+		
+		String url =response.path("url"); 
+		String thumbNail = response.path("thumbnailUrl"); 
+		
+		System.out.println("Response Url -> " + url);
+		System.out.println("Response Thumbnail -> " + thumbNail);
+		System.out.println("Response Status Code -> " + response.getStatusCode());
+		System.out.println("Response Content Type -> " + response.contentType());
+		
+		
+		// need to check if the url of thumb nail or URL is valid 
+		
+		get(url).then().statusCode(200); 
+		get(thumbNail).then().statusCode(200); 
+		
+		
+		
+		
+	}
 	
+	
+
+//	@Test
+	public void getHeaderInformation() {
+		Response response = get("https://jsonplaceholder.typicode.com/photos/1"); 
+		String expires = response.getHeader("expires"); 
+		String contentType =response.getHeader("content-type"); 
+		
+		System.out.println("Expires : " + expires);
+		System.out.println("Content Type : " + contentType);
+		
+		System.out.println("All Header information goes here ");
+		System.out.println("------------------------------------");
+		
+		for(Header header : response.getHeaders()) {
+			System.out.println("Name : " + header.getName() +"\t, Value : " + header.getValue());
+		}
+	}
+	
+//	@Test
+	public void getCookieInformation() {
+		Response response = get("https://jsonplaceholder.typicode.com/photos/1"); 
+		Cookie cookie = response.getDetailedCookie("__cfduid"); 
+		
+		System.out.println("API Has Expiry Date : " +cookie.hasExpiryDate());
+		System.out.println("API Expiry is : " + cookie.getExpiryDate());
+		System.out.println("Cookie Value : " +cookie.getValue());
+		System.out.println("Cookie Max Age : " + cookie.getMaxAge());
+	}
+	
+	@Test
+	public void testTestExtractStringAndJson() {
+		String jsonString = 
+				when().get("https://jsonplaceholder.typicode.com/albums/").then().extract().asString();  
+		
+		System.out.println(jsonString);
+		System.out.println("Lenght " + jsonString.length());
+		
+		JsonPath json = new JsonPath(jsonString); 
+		// you can get in json way 
+		List<String> titles = json.get("title"); 
+		
+		System.out.println("Title Size is : " +titles.size());
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
 	
 	
 }
